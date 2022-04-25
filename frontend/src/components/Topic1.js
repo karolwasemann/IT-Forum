@@ -1,6 +1,7 @@
 import { CommentsContext } from "../context/CommentsContext";
 import { useContext, useEffect } from "react";
 import AddComment from "./AddComment";
+import axios from "axios";
 import Comment from "./Comment";
 import { v4 as uuid } from "uuid";
 export default function Topic1() {
@@ -27,13 +28,12 @@ export default function Topic1() {
 
   useEffect(() => {
     const getCommentsApi = async () => {
-      const resp = await fetch("http://localhost:4000");
-      const commentsApi = await resp.json();
-      console.log(commentsApi);
-      setComments(commentsApi["comments"]);
+      const resp = await axios.get("http://localhost:4000");
+      console.log(resp.data);
+      setComments(resp.data);
     };
     getCommentsApi();
-  }, []);
+  }, [CommentsContext]);
 
   // API
   // useEffect(() => {
@@ -74,13 +74,21 @@ export default function Topic1() {
   //   getStored();
   // }, []);
 
-  const onDelete = (id) => {
-    const _comments = JSON.parse(localStorage.getItem("topic1")).filter(
-      (comment) => comment.id !== id
-    );
-    localStorage.setItem("topic1", JSON.stringify(_comments));
-    setComments([..._comments]);
+  const onDelete = async (id) => {
+    console.log(id);
+    const res = await axios.delete("http://localhost:4000", {
+      data: { id: id },
+    });
   };
+
+  const onEdit = async (e) => {
+    // console.log(id);
+    console.log(e);
+    // const res = await axios.put("http://localhost:4000", {
+    //   data: { id: id },
+    // });
+  };
+
   return (
     <div className="topic-container">
       <h2>Welcome at JavaScript!!</h2>
@@ -89,7 +97,12 @@ export default function Topic1() {
           .filter((topicComment) => topicComment.type === "topic1")
           .map((comment) => {
             return (
-              <Comment key={comment.id} comment={comment} onDelete={onDelete} />
+              <Comment
+                key={comment.id}
+                comment={comment}
+                onDelete={onDelete}
+                onEdit={onEdit}
+              />
             );
           })}
       </div>

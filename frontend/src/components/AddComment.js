@@ -1,6 +1,7 @@
 import { CommentsContext } from "../context/CommentsContext";
 import { useState, useContext } from "react";
 import { v4 as uuid } from "uuid";
+import axios from "axios";
 
 const AddComment = (props) => {
   const current = new Date();
@@ -8,10 +9,9 @@ const AddComment = (props) => {
     current.getMonth() + 1
   }/${current.getFullYear()} ${current.getHours()}:${current.getMinutes()}`;
 
-  const [comments, setComments] = useContext(CommentsContext);
   const [newComment, setNewComment] = useState({
-    userName: "",
-    commentTitle: "",
+    name: "",
+    title: "",
     message: "",
     type: props.type,
     date: date,
@@ -19,39 +19,38 @@ const AddComment = (props) => {
     avatar: "",
   });
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    const { userName, commentTitle, message, id, avatar } = newComment;
-
-    let toStorage = JSON.parse(localStorage.getItem(props.type)) || [];
-
-    toStorage.push(newComment);
-    localStorage.setItem(props.type, JSON.stringify(toStorage));
-    setComments([
-      ...comments,
-      {
-        userName: userName,
-        commentTitle: commentTitle,
-        message: message,
-        id: id,
-        type: props.type,
-        date: date,
-        avatar: avatar,
-      },
-    ]);
-    e.target.reset();
+    console.log("submit");
+    const res = await axios.post("http://localhost:4000", newComment);
   };
+
   return (
-    <form action="http://localhost:4000" method="post" className="messageform">
+    <form onSubmit={onSubmit} className="messageform">
       <label>Your name: </label>
-      <input name="name" type="text" required placeholder="Entry your name" />
+      <input
+        name="name"
+        type="text"
+        required
+        placeholder="Entry your name"
+        onChange={(e) => {
+          setNewComment({ ...newComment, name: e.target.value });
+        }}
+      />
 
       <label>Comment title:</label>
-      <input name="title" type="text" placeholder="Entry comment title" />
+      <input
+        name="title"
+        type="text"
+        placeholder="Entry comment title"
+        onChange={(e) => {
+          setNewComment({ ...newComment, title: e.target.value });
+        }}
+      />
 
       <textarea
         onChange={(e) => {
-          setNewComment({ ...newComment, message: e.target.value });
+          setNewComment({ ...newComment, message: e.target.value, id: uuid() });
         }}
         name="message"
         id=""
@@ -124,8 +123,8 @@ const AddComment = (props) => {
         />
         <label className="img-label" htmlFor="avatar6" id="avatar6"></label>
       </div>
-      <input value={props.type} name="type" hidden />
-      <input value={uuid()} name="id" hidden />
+      {/* <input value={props.type} name="type" hidden />
+      <input value={uuid()} name="id" hidden /> */}
       <button type="submit">Add Comment</button>
     </form>
   );
