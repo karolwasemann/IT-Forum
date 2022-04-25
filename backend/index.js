@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 
 app.post("/", async (req, res) => {
   console.log("recieved");
-  console.log(db);
+  // console.log(db);
   console.log(req.body);
   db.data["comments"].push(req.body);
   await db.write();

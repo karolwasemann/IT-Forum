@@ -42,31 +42,18 @@ const AddComment = (props) => {
     e.target.reset();
   };
   return (
-    <form onSubmit={onSubmit} className="messageform">
+    <form action="http://localhost:4000" method="post" className="messageform">
       <label>Your name: </label>
-      <input
-        onChange={(e) => {
-          setNewComment({ ...newComment, userName: e.target.value });
-        }}
-        type="text"
-        required
-        placeholder="Entry your name"
-      />
+      <input name="name" type="text" required placeholder="Entry your name" />
 
       <label>Comment title:</label>
-      <input
-        onChange={(e) => {
-          setNewComment({ ...newComment, commentTitle: e.target.value });
-        }}
-        type="text"
-        placeholder="Entry comment title"
-      />
+      <input name="title" type="text" placeholder="Entry comment title" />
 
       <textarea
         onChange={(e) => {
-          setNewComment({ ...newComment, message: e.target.value, id: uuid() });
+          setNewComment({ ...newComment, message: e.target.value });
         }}
-        name=""
+        name="message"
         id=""
         cols="30"
         rows="10"
@@ -137,6 +124,8 @@ const AddComment = (props) => {
         />
         <label className="img-label" htmlFor="avatar6" id="avatar6"></label>
       </div>
+      <input value={props.type} name="type" hidden />
+      <input value={uuid()} name="id" hidden />
       <button type="submit">Add Comment</button>
     </form>
   );
