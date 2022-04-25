@@ -2,7 +2,7 @@ import { CommentsContext } from "../context/CommentsContext";
 import { useContext, useEffect } from "react";
 import AddComment from "./AddComment";
 import Comment from "./Comment";
-import { v4 as uuid } from "uuid";
+import axios from "axios"
 export default function Topic1() {
   const [comments, setComments] = useContext(CommentsContext);
   //Date format
@@ -27,59 +27,30 @@ export default function Topic1() {
 
   useEffect(() => {
     const getCommentsApi = async () => {
-      const resp = await fetch("http://localhost:4000");
-      const commentsApi = await resp.json();
-      console.log(commentsApi);
-      setComments(commentsApi["comments"]);
+      const resp = await axios.get("http://localhost:4000");
+      console.log(resp.data);
+     setComments(resp.data)
     };
     getCommentsApi();
   }, []);
 
-  // API
-  // useEffect(() => {
-  //   const getComments = async () => {
-  //     const resp = await fetch("https://jsonplaceholder.typicode.com/users");
-  //     const data = await resp.json();
-  //     const users = data.slice(0, 3);
-  //     const commentsApi = users.map((user) => {
-  //       return {
-  //         userName: user.username,
-  //         commentTitle: user.company.name,
-  //         message: `${user.company.catchPhrase} lorIt is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.em `,
-  //         type: "topic1",
-  //         id: uuid(),
-  //         date: date,
-  //         avatar:
-  //           "https://gravatar.com/avatar/8501bfd17440f2032140bced0e9f661e?s=400&d=robohash&r=x",
-  //       };
-  //     });
 
-  //LocalStorage
-  //   let topic1Comments = JSON.parse(localStorage.getItem("topic1")) || [];
-  //   if (topic1Comments.length === 0) {
-  //     topic1Comments.push(
-  //       ...commentsData.filter((com) => com.type === "topic1")
-  //     );
-  //     topic1Comments.push(...commentsApi);
-  //     localStorage.setItem("topic1", JSON.stringify(topic1Comments));
-  //   }
-  // };
-  // getComments();
+  const onDelete = async (id) => {
+    const res = await axios.delete("http://localhost:4000" , {
+      data:{ id: id},
+    })
 
-  //   const getStored = () => {
-  //     const storedComments = JSON.parse(localStorage.getItem("topic1"));
-  //     if (storedComments === null) return;
-  //     setComments(storedComments);
-  //   };
-  //   getStored();
-  // }, []);
+  
 
-  const onDelete = (id) => {
-    const _comments = JSON.parse(localStorage.getItem("topic1")).filter(
-      (comment) => comment.id !== id
-    );
-    localStorage.setItem("topic1", JSON.stringify(_comments));
-    setComments([..._comments]);
+  };
+
+  const onEdit = async (id) => {
+    const res = await axios.put("http://localhost:4000" , {
+      data:{ id: id},
+    })
+
+  
+
   };
   return (
     <div className="topic-container">
@@ -89,7 +60,7 @@ export default function Topic1() {
           .filter((topicComment) => topicComment.type === "topic1")
           .map((comment) => {
             return (
-              <Comment key={comment.id} comment={comment} onDelete={onDelete} />
+              <Comment key={comment.id} comment={comment} onDelete={onDelete} onEdit={onEdit} />
             );
           })}
       </div>
