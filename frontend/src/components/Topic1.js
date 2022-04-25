@@ -26,12 +26,13 @@ export default function Topic1() {
   // Data comments
 
   useEffect(() => {
-    const getData = async () => {
+    const getCommentsApi = async () => {
       const resp = await fetch("http://localhost:4000");
-      // const data = await resp.json();
-      console.log(resp);
+      const commentsApi = await resp.json();
+      console.log(commentsApi);
+      setComments(commentsApi["comments"]);
     };
-    getData();
+    getCommentsApi();
   }, []);
 
   // API
