@@ -1,0 +1,20 @@
+{
+  "name": "backend-it-blog",
+  "version": "1.0.0",
+  "description": "Simple server ",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon --ignore 'db.json' index.js"
+  },
+  "author": "Karol W.",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "cros": "^1.0.1",
+    "express": "^4.17.3",
+    "lodash": "^4.17.21",
+    "lowdash": "^1.2.0",
+    "lowdb": "^3.0.0"
+  }
+}
