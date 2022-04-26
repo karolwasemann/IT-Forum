@@ -1,7 +1,7 @@
 {
   "name": "spa-projekt-gruppe3",
   "version": "0.1.0",
-  "homepage": "https://fbw-d03-2.github.io/it-blog",
+  "homepage": "https://fbw-d03-2.github.io/",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.0",

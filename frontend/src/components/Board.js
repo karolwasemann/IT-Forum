@@ -1,11 +1,32 @@
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComments } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useContext } from "react";
+import axios from "axios";
+import { CommentsContext } from "../context/CommentsContext";
 
 const Board = () => {
-  const topic1Comments = JSON.parse(localStorage.getItem("topic1"));
-  const topic2Comments = JSON.parse(localStorage.getItem("topic2"));
-  const topic3Comments = JSON.parse(localStorage.getItem("topic3"));
+  const [comments, setComments] = useContext(CommentsContext);
+
+  useEffect(() => {
+    const getCommentsApi = async () => {
+      const resp = await axios.get("http://localhost:4000");
+      console.log(resp.data);
+
+      setComments(resp.data);
+    };
+    getCommentsApi();
+  }, []);
+  const topic1Comments = comments.filter(
+    (comment) => comment.type === "topic1"
+  );
+  const topic2Comments = comments.filter(
+    (comment) => comment.type === "topic2"
+  );
+  const topic3Comments = comments.filter(
+    (comment) => comment.type === "topic3"
+  );
+  console.log(Boolean(topic1Comments));
   return (
     <>
       <main>
@@ -18,13 +39,17 @@ const Board = () => {
                 {" "}
                 <FontAwesomeIcon icon={faComments} /> JavaScript: Coding{" "}
               </td>
-              <td> {topic1Comments ? topic1Comments.length : null} comments</td>
+              <td>
+                {" "}
+                {topic1Comments.length > 0 ? topic1Comments.length : null}{" "}
+                comments
+              </td>
 
               <td className="td-avatar">
                 <img
                   className="avatar-small"
                   src={
-                    topic1Comments
+                    topic1Comments.length > 0
                       ? topic1Comments[topic1Comments.length - 1].avatar
                       : null
                   }
@@ -33,16 +58,16 @@ const Board = () => {
               </td>
               <td>
                 <strong>
-                  {topic1Comments
-                    ? topic1Comments[topic1Comments.length - 1].userName
+                  {topic1Comments.length > 0
+                    ? topic1Comments[topic1Comments.length - 1].name
                     : null}
                 </strong>{" "}
-                {topic1Comments
+                {topic1Comments.length > 0
                   ? topic1Comments[topic1Comments.length - 1].date
                   : null}{" "}
                 <br />
                 <i>
-                  {topic1Comments
+                  {topic1Comments.length > 0
                     ? topic1Comments[topic1Comments.length - 1].message
                         .split("")
                         .slice(0, 50)
@@ -57,12 +82,16 @@ const Board = () => {
                 {" "}
                 <FontAwesomeIcon icon={faComments} /> React: News und Tricks{" "}
               </td>
-              <td> {topic2Comments ? topic2Comments.length : null} comments</td>
+              <td>
+                {" "}
+                {topic2Comments.length > 0 ? topic2Comments.length : null}{" "}
+                comments
+              </td>
               <td className="td-avatar">
                 <img
                   className="avatar-small"
                   src={
-                    topic2Comments
+                    topic2Comments.length > 0
                       ? topic2Comments[topic2Comments.length - 1].avatar
                       : null
                   }
@@ -73,16 +102,16 @@ const Board = () => {
               <td>
                 {" "}
                 <strong>
-                  {topic2Comments
-                    ? topic2Comments[topic2Comments.length - 1].userName
+                  {topic2Comments.length > 0
+                    ? topic2Comments[topic2Comments.length - 1].name
                     : null}{" "}
                 </strong>
-                {topic2Comments
+                {topic2Comments.length > 0
                   ? topic2Comments[topic2Comments.length - 1].date
                   : null}{" "}
                 <br />
                 <i>
-                  {topic2Comments
+                  {topic2Comments.length > 0
                     ? topic2Comments[topic2Comments.length - 1].message
                         .split("")
                         .slice(0, 50)
@@ -98,13 +127,14 @@ const Board = () => {
               </td>
               <td>
                 {" "}
-                {topic3Comments ? topic3Comments.length : null} commentes{" "}
+                {topic3Comments.length > 0 ? topic3Comments.length : null}{" "}
+                commentes{" "}
               </td>
               <td className="td-avatar">
                 <img
                   className="avatar-small"
                   src={
-                    topic3Comments
+                    topic3Comments.length > 0
                       ? topic3Comments[topic3Comments.length - 1].avatar
                       : null
                   }
@@ -115,16 +145,16 @@ const Board = () => {
                 {" "}
                 <strong>
                   {" "}
-                  {topic3Comments
-                    ? topic3Comments[topic3Comments.length - 1].userName
+                  {topic3Comments.length > 0
+                    ? topic3Comments[topic3Comments.length - 1].name
                     : null}
                 </strong>{" "}
-                {topic3Comments
+                {topic3Comments.length > 0
                   ? topic3Comments[topic3Comments.length - 1].date
                   : null}{" "}
                 <br />
                 <i>
-                  {topic3Comments
+                  {topic3Comments.length > 0
                     ? topic3Comments[topic3Comments.length - 1].message
                         .split("")
                         .slice(0, 50)
