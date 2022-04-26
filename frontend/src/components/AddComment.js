@@ -20,6 +20,7 @@ const AddComment = (props) => {
   });
 
   const onSubmit = async (e) => {
+
     e.preventDefault();
     console.log("submit");
     const res = await axios.post("http://localhost:4000", newComment);
@@ -28,6 +29,7 @@ const AddComment = (props) => {
   return (
     <form onSubmit={onSubmit} className="messageform">
       <label>Your name: </label>
+
       <input
         name="name"
         type="text"
@@ -123,8 +125,7 @@ const AddComment = (props) => {
         />
         <label className="img-label" htmlFor="avatar6" id="avatar6"></label>
       </div>
-      {/* <input value={props.type} name="type" hidden />
-      <input value={uuid()} name="id" hidden /> */}
+
       <button type="submit">Add Comment</button>
     </form>
   );

@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function Comment(props) {
+
   const [message, setMessage] = useState(props.comment.message);
   const [isEdit, setIsEdit] = useState(false);
 
@@ -22,6 +23,7 @@ export default function Comment(props) {
         <h3>{props.comment.name}</h3>
       </div>
       <h5>{props.comment.title}</h5>
+
       {!isEdit ? <p>{message}</p> : null}
       {isEdit ? (
         <textarea
@@ -33,7 +35,9 @@ export default function Comment(props) {
       ) : null}
 
       <p className="data"> {props.comment.date}</p>
-      <button onClick={() => props.onDelete(props.comment.id)}>
+      <button onClick={() => props.onDelete(props.comment.id)}> Edit
+        </button>
+      <button onClick={() => props.onEdit(props.comment.id)}>
         <FontAwesomeIcon icon={faTrashCan} />
       </button>
       {!isEdit ? (
