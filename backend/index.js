@@ -15,7 +15,7 @@ app.get("/notfound", (req, res, next) => {
   myErr.type = "not-found"
   next(err)
 } catch(err){
-  console.log("hier im err")
+  console.log("hier im Err")
   next(err)
 }})
 
