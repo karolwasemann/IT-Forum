@@ -9,7 +9,6 @@ const AddComment = (props) => {
     current.getMonth() + 1
   }/${current.getFullYear()} ${current.getHours()}:${current.getMinutes()}`;
 
-  const [comments, setComments] = useContext(CommentsContext);
   const [newComment, setNewComment] = useState({
     name: "",
     title: "",
@@ -21,27 +20,39 @@ const AddComment = (props) => {
   });
 
   const onSubmit = async (e) => {
-      e.preventDefault();
-      console.log(e.target.value)
-      const resp = await axios.post("http://localhost:4000", newComment)
-      console.log(resp)
-   
+
+    e.preventDefault();
+    console.log("submit");
+    const res = await axios.post("http://localhost:4000", newComment);
   };
+
   return (
     <form onSubmit={onSubmit} className="messageform">
       <label>Your name: </label>
-      <input  onChange={(e) => {
+
+      <input
+        name="name"
+        type="text"
+        required
+        placeholder="Entry your name"
+        onChange={(e) => {
           setNewComment({ ...newComment, name: e.target.value });
-        }} name="name" type="text" required placeholder="Entry your name" />
+        }}
+      />
 
       <label>Comment title:</label>
-      <input  onChange={(e) => {
+      <input
+        name="title"
+        type="text"
+        placeholder="Entry comment title"
+        onChange={(e) => {
           setNewComment({ ...newComment, title: e.target.value });
-        }}  name="title" type="text" placeholder="Entry comment title" />
+        }}
+      />
 
       <textarea
         onChange={(e) => {
-          setNewComment({ ...newComment, message: e.target.value , id: uuid()});
+          setNewComment({ ...newComment, message: e.target.value, id: uuid() });
         }}
         name="message"
         id=""
@@ -114,6 +125,7 @@ const AddComment = (props) => {
         />
         <label className="img-label" htmlFor="avatar6" id="avatar6"></label>
       </div>
+
       <button type="submit">Add Comment</button>
     </form>
   );
