@@ -40,7 +40,6 @@ export default function Topic1() {
       data: { id: id },
     });
   };
-
   const onEdit = async (id) => {
     const res = await axios.put("http://localhost:4000", {
       data: { id: id },

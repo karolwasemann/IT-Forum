@@ -128,7 +128,7 @@ const Board = () => {
               <td>
                 {" "}
                 {topic3Comments.length > 0 ? topic3Comments.length : null}{" "}
-                commentes{" "}
+                comments{" "}
               </td>
               <td className="td-avatar">
                 <img

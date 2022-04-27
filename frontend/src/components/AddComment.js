@@ -20,8 +20,7 @@ const AddComment = (props) => {
   });
 
   const onSubmit = async (e) => {
-
-    e.preventDefault();
+    // e.preventDefault();
     console.log("submit");
     const res = await axios.post("http://localhost:4000", newComment);
   };
